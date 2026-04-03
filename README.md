@@ -76,3 +76,9 @@ Attraverso una piattaforma condivisa, il processo decisionale viene distribuito 
 
 Federica De Angelis
 
+## 📸 Anteprima progetto
+
+![Dashboard](screenshot1.png)
+
+![Gestione richieste](screenshot2.png)
+
