@@ -1,53 +1,78 @@
 # CERT.O People Hub
 
-HR Data-Driven platform designed to support workforce planning and decision-making in SMEs.
+CERT.O People Hub è un progetto nato da un’esigenza molto concreta: portare chiarezza nelle decisioni HR all’interno delle PMI.
 
-## 🎯 Project Goal
+In molti contesti operativi, soprattutto nella ristorazione, le richieste di personale nascono da urgenze reali ma non sempre analizzate:
+“serve qualcuno subito”.
 
-This project aims to transform HR decisions from reactive and perception-based choices into structured, traceable and data-driven processes.
+Questo progetto nasce proprio per trasformare queste situazioni in un processo strutturato, tracciabile e condiviso.
 
-In many SMEs, staffing decisions are often driven by urgency:
-“we need someone immediately”.
+---
 
-CERT.O People Hub introduces a structured workflow to guide decisions through:
-- data
-- standardization
-- HR validation
+## 🎯 Obiettivo
 
-## ⚙️ Main Features
+Supportare HR e management nel passaggio da decisioni reattive a decisioni più consapevoli, basate su dati e criteri chiari.
 
-- Workforce planning (current vs expected resources)
-- Gap analysis
-- Structured staffing request system
-- HR validation workflow
-- CERT.O decision framework integration
-- HR dashboard (in progress)
+Non si tratta solo di digitalizzare, ma di introdurre un modo diverso di ragionare sul fabbisogno di personale.
 
-## 🧠 Concept
+---
 
-“HR Business Partner is not just a role, but a system.”
+## ⚙️ Cosa fa il sistema
 
-The platform recreates HR decision-making through coordination between roles, not dependency on a single figure.
+- gestisce l’organico aziendale per reparto e ruolo  
+- confronta risorse attuali e risorse previste (Gap Analysis)  
+- permette l’inserimento di richieste di personale in modo strutturato  
+- guida il processo attraverso stati (inserita, validata, approvata, attivata)  
+- integra una logica decisionale basata sul Metodo CERT.O  
 
-## 🛠️ Tech Stack
+---
 
-- Python
-- Django
-- SQLite
+## 🧠 Logica del progetto
 
-## 🚀 Future Developments
+Il progetto si basa su un concetto semplice:
 
-- HR analytics dashboard (Python / Pandas)
-- PostgreSQL integration
-- AI decision support
-- Recruiting pipeline integration
+> l’HR Business Partner non è solo una persona, ma può diventare un sistema.
 
-## 📸 Project Preview
+Attraverso una piattaforma condivisa, il processo decisionale viene distribuito tra più ruoli, mantenendo coerenza e tracciabilità.
 
-![Dashboard](screenshot2.png)
-![Requests](screenshot1.png)
+---
 
-## 👤 Author
+## 🔄 Flusso operativo
+
+1. Inserimento della richiesta di personale  
+2. Analisi del fabbisogno (contesto e dati)  
+3. Validazione HR  
+4. Approvazione o rifiuto  
+5. Attivazione del processo di recruiting  
+
+---
+
+## 📊 Perché è utile
+
+- riduce decisioni basate su percezioni  
+- migliora il dialogo tra operativo e HR  
+- rende il fabbisogno più leggibile e confrontabile  
+- introduce un primo livello di analisi dati nelle PMI  
+
+---
+
+## 🛠️ Tecnologie utilizzate
+
+- Python  
+- Django  
+- SQLite  
+
+---
+
+## 🚀 Sviluppi futuri
+
+- dashboard HR con KPI  
+- integrazione con strumenti di analisi dati (Python / Pandas)  
+- estensione al ciclo completo HR (recruiting, onboarding, performance)  
+
+---
+
+## 👤 Autrice
 
 Federica De Angelis
 
