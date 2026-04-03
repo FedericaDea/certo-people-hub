@@ -78,7 +78,8 @@ Federica De Angelis
 
 ## 📸 Anteprima progetto
 
+### Dashboard organico e gap risorse
 ![Dashboard](screenshot1.png)
 
-![Gestione richieste](screenshot2.png)
-
+### Gestione richieste di personale
+![Richieste](screenshot2.png)
