@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard HR - CERT.O People Hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3e8ff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #7c3aed;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        .highlight-box {
+            background-color: #f5f3ff;
+            border-left: 5px solid #7c3aed;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            color: #4b5563;
+        }
+
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .card {
+            background-color: #faf5ff;
+            border: 1px solid #e9d5ff;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(124, 58, 237, 0.15);
+        }
+
+        .card h2 {
+            color: #4c1d95;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+
+        .card li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eadcff;
+            color: #374151;
+        }
+
+        .card li:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #5b21b6;
+        }
+
+        .kpi-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #7c3aed;
+            margin-top: 10px;
+        }
+
+        .charts {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .chart-box {
+            background: #ffffff;
+            border: 1px solid #e9d5ff;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .chart-title {
+            color: #4c1d95;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        canvas {
+            max-width: 100%;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            background-color: #7c3aed;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+        }
+
+        .back-link:hover {
+            background-color: #5b21b6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Dashboard HR - CERT.O People Hub</h1>
+    <p class="subtitle">Vista sintetica delle richieste e del processo HR</p>
+
+    <div class="highlight-box">
+        Questa dashboard rende visibili i dati chiave del processo:
+        reparto, stato e motivo della richiesta.
+    </div>
+
+    <div class="kpi-cards">
+        <div class="card">
+            <h2>Totale richieste</h2>
+            <p class="kpi-number">{{ totale_richieste }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Inserite</h2>
+            <p class="kpi-number">{{ inserite }}</p>
+        </div>
+
+        <div class="card">
+            <h2>In valutazione</h2>
+            <p class="kpi-number">{{ in_valutazione }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Approvate</h2>
+            <p class="kpi-number">{{ approvate }}</p>
+        </div>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <h2>Richieste per Reparto</h2>
+            <ul>
+                {% for key, value in reparto.items %}
+                    <li><span class="label">{{ key }}</span>: {{ value }}</li>
+                {% empty %}
+                    <li>Nessun dato disponibile</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Richieste per Stato</h2>
+            <ul>
+                {% for key, value in stato.items %}
+                    <li><span class="label">{{ key }}</span>: {{ value }}</li>
+                {% empty %}
+                    <li>Nessun dato disponibile</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Richieste per Motivo</h2>
+            <ul>
+                {% for key, value in motivo.items %}
+                    <li><span class="label">{{ key }}</span>: {{ value }}</li>
+                {% empty %}
+                    <li>Nessun dato disponibile</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="charts">
+        <div class="chart-box">
+            <div class="chart-title">Grafico richieste per reparto</div>
+            <canvas id="chartReparto"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <div class="chart-title">Grafico richieste per stato</div>
+            <canvas id="chartStato"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <div class="chart-title">Grafico richieste per motivo</div>
+            <canvas id="chartMotivo"></canvas>
+        </div>
+    </div>
+    <div class="chart-box">
+    <div class="chart-title">Organico e fabbisogno</div>
+
+    <table style="width:100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background-color:#f5f3ff;">
+                <th style="padding:10px;">Reparto</th>
+                <th>Ruolo</th>
+                <th>Attuali</th>
+                <th>Previsti</th>
+                <th>Gap</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for voce in organico %}
+            <tr style="text-align:center;">
+                <td>{{ voce.reparto }}</td>
+                <td>{{ voce.ruolo }}</td>
+                <td>{{ voce.attuali }}</td>
+                <td>{{ voce.previste }}</td>
+
+                {% if voce.gap > 0 %}
+                    <td style="color:red; font-weight:bold;">{{ voce.gap }}</td>
+                {% elif voce.gap == 0 %}
+                    <td style="color:green;">OK</td>
+                {% else %}
+                    <td>{{ voce.gap }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+    <a class="back-link" href="/">⬅ Torna alla Home</a>
+</div>
+
+{{ reparto_labels|json_script:"reparto-labels" }}
+{{ reparto_values|json_script:"reparto-values" }}
+{{ stato_labels|json_script:"stato-labels" }}
+{{ stato_values|json_script:"stato-values" }}
+{{ motivo_labels|json_script:"motivo-labels" }}
+{{ motivo_values|json_script:"motivo-values" }}
+
+<script>
+    const repartoLabels = JSON.parse(document.getElementById('reparto-labels').textContent);
+    const repartoValues = JSON.parse(document.getElementById('reparto-values').textContent);
+
+    const statoLabels = JSON.parse(document.getElementById('stato-labels').textContent);
+    const statoValues = JSON.parse(document.getElementById('stato-values').textContent);
+
+    const motivoLabels = JSON.parse(document.getElementById('motivo-labels').textContent);
+    const motivoValues = JSON.parse(document.getElementById('motivo-values').textContent);
+
+    new Chart(document.getElementById('chartReparto'), {
+        type: 'bar',
+        data: {
+            labels: repartoLabels,
+            datasets: [{
+                label: 'Richieste',
+                data: repartoValues,
+                backgroundColor: '#c4b5fd',
+                borderColor: '#7c3aed',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('chartStato'), {
+        type: 'bar',
+        data: {
+            labels: statoLabels,
+            datasets: [{
+                label: 'Richieste',
+                data: statoValues,
+                backgroundColor: '#ddd6fe',
+                borderColor: '#7c3aed',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('chartMotivo'), {
+        type: 'bar',
+        data: {
+            labels: motivoLabels,
+            datasets: [{
+                label: 'Richieste',
+                data: motivoValues,
+                backgroundColor: '#e9d5ff',
+                borderColor: '#7c3aed',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

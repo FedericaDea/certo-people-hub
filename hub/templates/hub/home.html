@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>CERT.O People Hub</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3e8ff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #7c3aed;
+            text-align: center;
+        }
+
+        h2 {
+            color: #6b7280;
+            margin-top: 30px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #7c3aed;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #5b21b6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #ede9fe;
+            color: #4c1d95;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f9f5ff;
+        }
+
+        .messaggio {
+            background-color: #e0f2fe;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .stato {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>CERT.O People Hub</h1>
+    <p style="text-align:center; color:#6b7280;">
+        Sistema che rende le decisioni HR condivise, strutturate e coordinate
+    </p>
+
+    {% if messaggio %}
+        <div class="messaggio">
+            {{ messaggio }}
+        </div>
+    {% endif %}
+
+    <h2>Crea richiesta personale</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label>Nome richiedente:</label>
+        <input type="text" name="nome_richiedente">
+
+        <label>Reparto:</label>
+<select name="reparto">
+    {% for reparto in reparti %}
+        <option value="{{ reparto.nome }}">{{ reparto.nome }}</option>
+    {% endfor %}
+</select>
+
+        <label>Ruolo richiesto:</label>
+<select name="ruolo_richiesto">
+    {% for ruolo in ruoli %}
+        <option value="{{ ruolo.nome }}">{{ ruolo.nome }}</option>
+    {% endfor %}
+</select>
+        <label>Motivazione:</label>
+        <textarea name="motivazione"></textarea>
+
+        <label>Urgenza:</label>
+        <select name="urgenza">
+            <option value="Alta">Alta</option>
+            <option value="Media">Media</option>
+            <option value="Bassa">Bassa</option>
+        </select>
+
+        <label>Tipo richiesta:</label>
+        <input type="text" name="tipo_richiesta">
+
+        <label>Motivo richiesta:</label>
+<select name="motivo_richiesta">
+    {% for motivo in motivi %}
+        <option value="{{ motivo.nome }}">{{ motivo.nome }}</option>
+    {% endfor %}
+</select>
+
+        <button type="submit">Invia richiesta</button>
+    </form>
+
+    <h2>Elenco richieste</h2>
+
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>Reparto</th>
+            <th>Ruolo</th>
+            <th>Urgenza</th>
+            <th>Motivo</th>
+            <th>Stato</th>
+            <th>Azione</th>
+        </tr>
+
+        {% for richiesta in richieste %}
+        <tr>
+            <td>{{ richiesta.nome_richiedente }}</td>
+            <td>{{ richiesta.reparto }}</td>
+            <td>{{ richiesta.ruolo_richiesto }}</td>
+            <td>{{ richiesta.urgenza }}</td>
+            <td>{{ richiesta.motivo_richiesta }}</td>
+            <td class="stato">{{ richiesta.stato }}</td>
+            <td>
+                <form method="post" action="{% url 'aggiorna_stato' richiesta.id %}">
+                    {% csrf_token %}
+                    <select name="stato">
+                        <option>Inserita</option>
+                        <option>In valutazione</option>
+                        <option>Approvata</option>
+                        <option>Recruiting attivo</option>
+                        <option>Chiusa</option>
+                    </select>
+                    <button type="submit">OK</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">Nessuna richiesta presente</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</div>
+
+</body>
+</html>
