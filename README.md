@@ -42,6 +42,12 @@ The platform recreates HR decision-making through coordination between roles, no
 - AI decision support
 - Recruiting pipeline integration
 
+## 📸 Project Preview
+
+![Dashboard](screenshot2.png)
+![Requests](screenshot1.png)
+
 ## 👤 Author
 
 Federica De Angelis
+
